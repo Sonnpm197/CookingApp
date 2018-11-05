@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "851272095541",
+    "firebase_url": "https://appnauan.firebaseio.com",
+    "project_id": "appnauan",
+    "storage_bucket": "appnauan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851272095541:android:359624b5e7049c6f",
+        "android_client_info": {
+          "package_name": "fpt.android.com.appnauan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851272095541-r0e3dv2nvi0se4ppnpedfrfkobdl9ekp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fpt.android.com.appnauan",
+            "certificate_hash": "9f4827882b722b6c1c64140b381dcf4e4d177d57"
+          }
+        },
+        {
+          "client_id": "851272095541-jb6ggc0hqvlj4h0fnr9i169dt7iph5bm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc8jzSG43SpA-v4D3JrFS9F6KnLc8W2rA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851272095541-jb6ggc0hqvlj4h0fnr9i169dt7iph5bm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
