@@ -18,6 +18,10 @@ import fpt.android.com.appnauan.entities.Food;
 
 public class FirebaseModel {
 
+    /**
+     *  TODO: Notify adapter here whenever data from firebase changed
+     */
+
     private Context context;
     private ArrayList<Food> foods;
     private static final String TAG = FirebaseModel.class.getSimpleName();
@@ -44,7 +48,7 @@ public class FirebaseModel {
      * Get food from firebase and update whenever data changes
      * @return
      */
-    public void getFoods() {
+    public void getFoods(/*TODO: , Food adapter*/) {
         foods = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
 
@@ -52,7 +56,7 @@ public class FirebaseModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 foods.clear();
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Food food = snapshot.getValue(Food.class);
                     Log.i(TAG, "Receive: " + food.toString());
                     foods.add(food);
@@ -68,12 +72,22 @@ public class FirebaseModel {
         });
     }
 
-    public void removeFood(final String foodName) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
-        databaseReference.child(foodName).removeValue(new DatabaseReference.CompletionListener() {
+    public void removeFood(final String foodName /*TODO: , Food adapter*/) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                Log.i(TAG, "Remove food name: " + foodName + " successfully");
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Food food = snapshot.getValue(Food.class);
+                    if (food.getName().equalsIgnoreCase(foodName)) {
+                        snapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
