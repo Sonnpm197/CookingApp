@@ -1,0 +1,79 @@
+package fpt.android.com.appnauan.firebase;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import fpt.android.com.appnauan.entities.Food;
+
+public class FirebaseModel {
+
+    private Context context;
+    private ArrayList<Food> foods;
+    private static final String TAG = FirebaseModel.class.getSimpleName();
+
+    public FirebaseModel() {
+    }
+
+    public void addFood(Food food) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("meat", food.getMeat());
+        params.put("vegetable", food.getVegetable());
+        params.put("recipe", food.getRecipe());
+        params.put("type", food.getType());
+
+        // add to DB
+        databaseReference.child(food.getName()).push().setValue(params);
+        Log.i(TAG, "Add: " + food.toString());
+    }
+
+    /**
+     * Get food from firebase and update whenever data changes
+     * @return
+     */
+    public void getFoods() {
+        foods = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                foods.clear();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Food food = snapshot.getValue(Food.class);
+                    Log.i(TAG, "Receive: " + food.toString());
+                    foods.add(food);
+                }
+
+                // TODO: Nam update to adapter
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void removeFood(final String foodName) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
+        databaseReference.child(foodName).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                Log.i(TAG, "Remove food name: " + foodName + " successfully");
+            }
+        });
+    }
+}
