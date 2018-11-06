@@ -29,13 +29,14 @@ public class FirebaseModel {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Food");
 
         HashMap<String, Object> params = new HashMap<>();
+        params.put("name", food.getName());
         params.put("meat", food.getMeat());
         params.put("vegetable", food.getVegetable());
         params.put("recipe", food.getRecipe());
         params.put("type", food.getType());
 
         // add to DB
-        databaseReference.child(food.getName()).push().setValue(params);
+        databaseReference.push().setValue(params);
         Log.i(TAG, "Add: " + food.toString());
     }
 
