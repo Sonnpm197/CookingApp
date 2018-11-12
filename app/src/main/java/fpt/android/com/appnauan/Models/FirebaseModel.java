@@ -1,8 +1,7 @@
-package fpt.android.com.appnauan.firebase;
+package fpt.android.com.appnauan.Models;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import fpt.android.com.appnauan.entities.Food;
+import fpt.android.com.appnauan.Entities.Food;
 
 public class FirebaseModel {
 

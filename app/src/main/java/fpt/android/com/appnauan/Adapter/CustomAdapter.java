@@ -44,7 +44,7 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            if (list_chat_models.get(position).isSend) {
+            if (list_chat_models.get(position).isUserSend()) {
                 view = layoutInflater.inflate(R.layout.list_item_message_send, null);
             }
             else {

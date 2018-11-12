@@ -2,11 +2,11 @@ package fpt.android.com.appnauan.Models;
 
 public class ChatModel {
     public String message;
-    public boolean isSend;
+    public boolean userSend;
 
-    public ChatModel(String message, boolean isSend) {
+    public ChatModel(String message, boolean userSend) {
         this.message = message;
-        this.isSend = isSend;
+        this.userSend = userSend;
     }
 
     public ChatModel() {
@@ -20,11 +20,11 @@ public class ChatModel {
         this.message = message;
     }
 
-    public boolean isSend() {
-        return isSend;
+    public boolean isUserSend() {
+        return userSend;
     }
 
-    public void setSend(boolean send) {
-        isSend = send;
+    public void setUserSend(boolean userSend) {
+        this.userSend = userSend;
     }
 }

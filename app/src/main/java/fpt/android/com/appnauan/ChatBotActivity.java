@@ -15,33 +15,37 @@ import fpt.android.com.appnauan.Models.ChatModel;
 
 public class ChatBotActivity extends AppCompatActivity {
 
-    ListView listView;
-    EditText editText;
-    List<ChatModel> list_chat = new ArrayList<>();
-    Button btn_send_message;
+    private ListView messagesOnUI;
+    private EditText userMessage;
+    private List<ChatModel> listChatModel;
+    private Button btnSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_bot);
 
-        listView = (ListView) findViewById(R.id.list_of_message);
-        editText = (EditText) findViewById(R.id.user_message);
-        btn_send_message = (Button) findViewById(R.id.btnSend);
+        listChatModel = new ArrayList<>();
 
-        btn_send_message.setOnClickListener(new View.OnClickListener() {
+        messagesOnUI = (ListView) findViewById(R.id.listMessages);
+        userMessage = (EditText) findViewById(R.id.userMessage);
+        btnSend = (Button) findViewById(R.id.btnSend);
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = editText.getText().toString();
+                String text = userMessage.getText().toString();
                 List<ChatModel> models;
                 ChatModel model = new ChatModel(text, true); // user send message
-                list_chat.add(model);
-                models = list_chat;
+                listChatModel.add(model);
+                models = listChatModel;
                 CustomAdapter adapter = new CustomAdapter(models, getApplicationContext());
-                listView.setAdapter(adapter);
+                messagesOnUI.setAdapter(adapter);
+
+                // TODO: implement AI here
                 model = new ChatModel(text, false); // AI send message
-                list_chat.add(model);
-                editText.setText("");
+                listChatModel.add(model);
+                userMessage.setText("");
             }
         });
     }

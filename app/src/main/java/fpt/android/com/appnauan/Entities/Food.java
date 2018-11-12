@@ -1,4 +1,4 @@
-package fpt.android.com.appnauan.entities;
+package fpt.android.com.appnauan.Entities;
 
 public class Food {
 
