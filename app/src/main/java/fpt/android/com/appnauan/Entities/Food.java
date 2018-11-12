@@ -1,6 +1,45 @@
 package fpt.android.com.appnauan.Entities;
 
-public class Food {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Food implements Parcelable {
+
+    protected Food(Parcel in) {
+        name = in.readString();
+        meat = in.readString();
+        vegetable = in.readString();
+        recipe = in.readString();
+        type = in.readString();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Food> CREATOR = new Creator<Food>() {
+        @Override
+        public Food createFromParcel(Parcel in) {
+            return new Food(in);
+        }
+
+        @Override
+        public Food[] newArray(int size) {
+            return new Food[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(meat);
+        parcel.writeString(vegetable);
+        parcel.writeString(recipe);
+        parcel.writeString(type);
+        parcel.writeString(imageUrl);
+    }
 
     public enum Type{
         MAN("Món mặn"),
@@ -23,16 +62,18 @@ public class Food {
     private String vegetable;
     private String recipe;
     private String type;
+    private String imageUrl;
 
     public Food() {
     }
 
-    public Food(String foodName, String meat, String vegetable, String recipe, String type) {
-        this.name = foodName;
+    public Food(String name, String meat, String vegetable, String recipe, String type, String imageUrl) {
+        this.name = name;
         this.meat = meat;
         this.vegetable = vegetable;
         this.recipe = recipe;
         this.type = type;
+        this.imageUrl = imageUrl;
     }
 
     public String getMeat() {
@@ -75,6 +116,14 @@ public class Food {
         this.type = type;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public String toString() {
         return "Food{" +
@@ -82,7 +131,8 @@ public class Food {
                 ", meat='" + meat + '\'' +
                 ", vegetable='" + vegetable + '\'' +
                 ", recipe='" + recipe + '\'' +
-                ", type=" + type +
+                ", type='" + type + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }
