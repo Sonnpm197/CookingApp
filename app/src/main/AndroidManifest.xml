@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatBotActivity"></activity>
+        <activity android:name=".SpeechToTextActivity"/>
+        <activity android:name=".ChatBotActivity"/>
     </application>
 
 </manifest>
