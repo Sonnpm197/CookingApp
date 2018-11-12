@@ -1,19 +1,27 @@
 package fpt.android.com.appnauan;
 
+import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fpt.android.com.appnauan.Adapter.CustomAdapter;
 import fpt.android.com.appnauan.Models.ChatModel;
 
 public class ChatBotActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE_SPEECH = 10;
 
     private ListView messagesOnUI;
     private EditText userMessage;
@@ -42,11 +50,68 @@ public class ChatBotActivity extends AppCompatActivity {
                 CustomAdapter adapter = new CustomAdapter(models, getApplicationContext());
                 messagesOnUI.setAdapter(adapter);
 
-                // TODO: implement AI here
+                // TODO: implement AI response here
                 model = new ChatModel(text, false); // AI send message
                 listChatModel.add(model);
                 userMessage.setText("");
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.camera:
+                // open camera
+                startImageRecognition();
+                return true;
+            case R.id.voice_record:
+                // open voice record
+                startVoiceRecording();
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * After recording set text for user message and perform click
+     */
+    private void startVoiceRecording() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH);
+        } else {
+            Toast.makeText(this, "This device does not support speech input", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * After taking an food image return food name set to user message
+     */
+    private void startImageRecognition() {
+        // TODO: finish this
+    }
+
+    //get string after speech
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_SPEECH:
+                if (resultCode == RESULT_OK && data != null) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    userMessage.setText(result.get(0));
+                    btnSend.performClick();
+                }
+                break;
+        }
     }
 }
