@@ -38,14 +38,14 @@ public class ChatBotModel {
 
     private String fillMeatQuestions =
             "Bạn có thịt gì ?," +
-            "Bạn muốn nấu với thịt hay cá gì ?," +
-            "Bạn có muốn nấu kèm với thịt không ?,";
+                    "Bạn muốn nấu với thịt hay cá gì ?," +
+                    "Bạn có muốn nấu kèm với thịt không ?,";
 
 
     private String fillVegetableQuestions =
-        "Bạn có nấu kèm rau củ gì không ?," +
-        "Thế còn rau thì sao ?," +
-        "Bạn muốn ăn kèm rau củ gì ?,";
+            "Bạn có nấu kèm rau củ gì không ?," +
+                    "Thế còn rau thì sao ?," +
+                    "Bạn muốn ăn kèm rau củ gì ?,";
     ;
 
     private AIDataService aiDataService;
@@ -114,7 +114,6 @@ public class ChatBotModel {
     }
 
 
-
     private void onResult(final AIResponse response) {
         chatBotActivity.runOnUiThread(new Runnable() {
             @Override
@@ -150,7 +149,7 @@ public class ChatBotModel {
                     tts.speak();
                 }
 
-                chatBotActivity.setBotResponse(speech);
+                chatBotActivity.setBotResponse(speech, false, null);
 
                 final Metadata metadata = result.getMetadata();
                 if (metadata != null) {
@@ -196,13 +195,14 @@ public class ChatBotModel {
     }
 
     /**
-     * This method will be called in firebaseModel.findFoodByIngredient
+     * This method will be called in firebaseModel.findFoodByIngredient after finding a appropriate response
+     *
      * @param food
      */
     public void responseWithReturnedFoodByIngredient(Food food) {
         if (food == null) {
             String response = "Xin lỗi mình chẳng tìm thấy món nào cả :(";
-            chatBotActivity.setBotResponse(response);
+            chatBotActivity.setBotResponse(response, false, null);
             if (isVoiceRecord) {
                 tts.setText(response);
                 tts.speak();
@@ -211,7 +211,7 @@ public class ChatBotModel {
             return;
         }
 
-        String response = "Bạn có thể thử món " + food.getName();
+        String response = "Bạn có thể thử món '" + food.getName() + "'. Hãy bấm vào tin nhắn này để hiển thị rõ hơn nhé";
         if (isVoiceRecord) {
             tts.setText(response);
             tts.speak();
@@ -219,7 +219,7 @@ public class ChatBotModel {
         }
 
         // Show bot response on UI
-        chatBotActivity.setBotResponse(response);
+        chatBotActivity.setBotResponse(response, true, food);
     }
 
     private void onError(final AIError error) {
@@ -228,5 +228,11 @@ public class ChatBotModel {
 
     public void setVoiceRecord(boolean voiceRecord) {
         isVoiceRecord = voiceRecord;
+    }
+
+    public void stopSpeaking() {
+        if (tts.isSpeaking()) {
+            tts.onStop();
+        }
     }
 }

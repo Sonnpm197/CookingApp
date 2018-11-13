@@ -1,6 +1,7 @@
 package fpt.android.com.appnauan.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import com.github.library.bubbleview.BubbleTextView;
 
 import java.util.List;
 
+import fpt.android.com.appnauan.DishItemDetailActivity;
 import fpt.android.com.appnauan.Models.ChatModel;
 import fpt.android.com.appnauan.R;
 
@@ -44,7 +46,8 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            if (list_chat_models.get(position).isUserSend()) {
+            final ChatModel chatModel = list_chat_models.get(position);
+            if (chatModel.isUserSend()) {
                 view = layoutInflater.inflate(R.layout.list_item_message_send, null);
             }
             else {
@@ -52,8 +55,18 @@ public class CustomAdapter extends BaseAdapter {
             }
 
             BubbleTextView text_message = (BubbleTextView) view.findViewById(R.id.text_message);
-            text_message.setText(list_chat_models.get(position).message);
+            text_message.setText(list_chat_models.get(position).getMessage());
 
+            if (chatModel.isClickable() && chatModel.getFood() != null) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, DishItemDetailActivity.class);
+                        intent.putExtra("FoodItem", chatModel.getFood());
+                        context.startActivity(intent);
+                    }
+                });
+            }
         }
         return view;
     }

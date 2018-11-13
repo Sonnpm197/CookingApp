@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import fpt.android.com.appnauan.Adapter.CustomAdapter;
+import fpt.android.com.appnauan.Entities.Food;
 import fpt.android.com.appnauan.Models.ChatBotModel;
 import fpt.android.com.appnauan.Models.ChatModel;
 
@@ -62,10 +63,13 @@ public class ChatBotActivity extends AppCompatActivity {
 
     /**
      * This method will be called in ChatBotModel after finish receiving a message
+     * isClickable: user can click on foodName if bot return a message with food name
      * @param response
      */
-    public void setBotResponse(String response) {
+    public void setBotResponse(String response, boolean isClickable, Food food) {
         ChatModel model = new ChatModel(response, false); // AI send message
+        model.setClickable(true); // set clickable to redirect to detailActivity
+        model.setFood(food); // food to show on detail activity
         listChatModel.add(model);
         userMessage.setText("");
         CustomAdapter adapter = new CustomAdapter(listChatModel, getApplicationContext());
@@ -119,4 +123,10 @@ public class ChatBotActivity extends AppCompatActivity {
         return false;
     }
 
+    // Make chat bot stop speaking
+    @Override
+    protected void onPause() {
+        super.onPause();
+        chatBotModel.stopSpeaking();
+    }
 }
