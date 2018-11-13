@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AppNauAn</string>
-    <string name="dish_target" translatable="false">DISH_TARGET</string>
     <string name="INGREDIENT_TITLE">Ingredient</string>
     <string name="RECIPE_TITLE">Recipe</string>
 </resources>

@@ -41,14 +41,14 @@ public class Food implements Parcelable {
         parcel.writeString(imageUrl);
     }
 
-    public enum Type{
+    public enum Type {
         MAN("Món mặn"),
         CHAY("Món chay"),
         TRANG_MIENG("Tráng miệng");
 
         private String value;
 
-        Type(String value){
+        Type(String value) {
             this.value = value;
         }
 
@@ -135,4 +135,22 @@ public class Food implements Parcelable {
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
+
+    /**
+     * Get detail meat type
+     * For e.g. thịt bò, thịt gà -> arr {thịt bò, thịt gà}
+     * @param type
+     * @return
+     */
+    public static String[] getDetailByTypes(String type) {
+        if (type != null) {
+            String[] arr = type.split(",");
+            for (String a : arr) {
+                a = a.trim().toLowerCase();
+            }
+            return arr;
+        }
+        return null;
+    }
+
 }

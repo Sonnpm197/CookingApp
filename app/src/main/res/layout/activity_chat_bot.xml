@@ -10,7 +10,7 @@
         android:id="@+id/listMessages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btnSend"
+        android:layout_above="@id/userMessage"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="0dp"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Học Nấu Ăn</string>
+    <string name="INGREDIENT_TITLE">Nguyên liệu</string>
+    <string name="RECIPE_TITLE">Hướng dẫn nấu</string>
+</resources>

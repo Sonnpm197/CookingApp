@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import fpt.android.com.appnauan.Adapter.CustomAdapter;
+import fpt.android.com.appnauan.Models.ChatBotModel;
 import fpt.android.com.appnauan.Models.ChatModel;
 
 public class ChatBotActivity extends AppCompatActivity {
@@ -27,13 +28,17 @@ public class ChatBotActivity extends AppCompatActivity {
     private EditText userMessage;
     private List<ChatModel> listChatModel;
     private Button btnSend;
+    private ChatBotModel chatBotModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_bot);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         listChatModel = new ArrayList<>();
+        chatBotModel = new ChatBotModel(this);
 
         messagesOnUI = (ListView) findViewById(R.id.listMessages);
         userMessage = (EditText) findViewById(R.id.userMessage);
@@ -50,33 +55,22 @@ public class ChatBotActivity extends AppCompatActivity {
                 CustomAdapter adapter = new CustomAdapter(models, getApplicationContext());
                 messagesOnUI.setAdapter(adapter);
 
-                // TODO: implement AI response here
-                model = new ChatModel(text, false); // AI send message
-                listChatModel.add(model);
-                userMessage.setText("");
+                chatBotModel.sendRequest(text); // also call setBotResponse
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.camera:
-                // open camera
-                startImageRecognition();
-                return true;
-            case R.id.voice_record:
-                // open voice record
-                startVoiceRecording();
-                return true;
-        }
-        return false;
+    /**
+     * This method will be called in ChatBotModel after finish receiving a message
+     * @param response
+     */
+    public void setBotResponse(String response) {
+        ChatModel model = new ChatModel(response, false); // AI send message
+        listChatModel.add(model);
+        userMessage.setText("");
+        CustomAdapter adapter = new CustomAdapter(listChatModel, getApplicationContext());
+        messagesOnUI.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -93,13 +87,6 @@ public class ChatBotActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * After taking an food image return food name set to user message
-     */
-    private void startImageRecognition() {
-        // TODO: finish this
-    }
-
     //get string after speech
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,8 +97,26 @@ public class ChatBotActivity extends AppCompatActivity {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     userMessage.setText(result.get(0));
                     btnSend.performClick();
+                    chatBotModel.setVoiceRecord(true);
                 }
                 break;
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_chatbot, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.voiceRecord:
+                startVoiceRecording();
+            return true;
+        }
+        return false;
+    }
+
 }
