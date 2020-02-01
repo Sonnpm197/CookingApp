@@ -1,8 +1,7 @@
 # CookingApp
 Android recipes app with API.AI
 
-IDE: Android Studio
-Database: Firebase https://console.firebase.google.com/
+Android Studio + Firebase (https://console.firebase.google.com/)
 
 If you have an abundance of ingredients in your kitchen and you have no idea of how and what to cook then this app is definitely your choice
 
